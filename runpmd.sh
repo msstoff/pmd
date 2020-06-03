@@ -45,12 +45,13 @@ genReport() {
     ./run.sh pmd -f xslt -l apex -R "${RULE_DIR}"  -d "${source}" > "${output_dir}"/"${filename}"
 }
 
-
+# check that paramters have been entered1
 if [ $# == 0 ]; then
     usage
     exit 1
 fi
 
+# parse the parameters and set the entered values
 while [ "$1" != "" ]; do
     case $1 in
         -i )    shift
@@ -67,6 +68,7 @@ done
 
 
 if [ -d "${source}" ]; then
+  # its a directory, check for detail flag
   if [ $detail  ]; then
     # get the individual files and create the report
     source_dir=$source
@@ -76,11 +78,12 @@ if [ -d "${source}" ]; then
         source="${f}"
         genReport
     done
-  else  # detail not set
+  else  # detail not set: generate the bulk directory report
     filename='PMD-'${rundate}.html
     genReport
   fi
 elif [ -f "${source}" ]; then
+    #input is a file, generate a single report
     filename=$(basename "${source}" .cls)'-'${rundate}.html
     genReport
 else
